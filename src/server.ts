@@ -11,7 +11,8 @@ connectDB();
 
 
 
-mongoose.connection.once('open',():void=> {console.log('Connected to MongoDB')
+mongoose.connection.once('open', (): void => {
+    console.log('Connected to MongoDB')
 
-app.listen(PORT, ():void=> console.log(`Server running on port ${PORT}`))
+    app.listen(PORT, (): void => console.log(`Server running on port ${PORT}`))
 })
