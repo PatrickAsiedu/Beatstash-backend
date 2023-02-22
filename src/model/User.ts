@@ -23,7 +23,7 @@ const UserSchema = new Schema({
             default: 'listener'
         },
         Producer: String,
-        required: true
+        // required: true
     }
 
 })
