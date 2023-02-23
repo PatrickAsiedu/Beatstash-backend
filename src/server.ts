@@ -14,15 +14,19 @@ import * as Signup from "./routes/signup";
 const PORT = process.env.DB_PORT || 3500
 connectDB();
 
-app.use(express.json)
+// built-in middleware for json 
+app.use(express.json())
+
+// built-in middleware to handle urlencoded form data
+app.use(express.urlencoded({ extended: false }))
+
+//middleware for logging
 app.use(morgan('dev'))
 
-// app.use('/signup', Signup.router)
+app.use('/signup', Signup.router)
 
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello world!');
-});
+
 
 
 
