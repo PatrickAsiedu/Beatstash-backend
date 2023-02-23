@@ -8,8 +8,9 @@ type Userdata = {
 }
 
 const handleSIgnUp = async (req: Request, res: Response) => {
+    console.log(req.body)
     const { email, password }: Userdata = req.body;
-
+    // validate fields
     //check if required fields exist
     if (!email || !password) {
         return res.status(400).json({ 'message': 'email and password are rquired' })

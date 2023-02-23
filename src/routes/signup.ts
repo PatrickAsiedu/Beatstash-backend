@@ -1,6 +1,9 @@
 import express from 'express';
-const router = express.Router();
 import handleSIgnUp from '../controllers/signUpController';
+
+
+const router = express.Router();
+
 
 
 router.post('/', handleSIgnUp)

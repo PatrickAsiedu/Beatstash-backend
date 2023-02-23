@@ -1,6 +1,6 @@
 import dotenv from "dotenv"
 dotenv.config()
-import express from "express"
+import express, { Request, Response, NextFunction } from "express"
 const app = express()
 import morgan from "morgan"
 
@@ -17,7 +17,12 @@ connectDB();
 app.use(express.json)
 app.use(morgan('dev'))
 
-app.use('/signup', Signup.router)
+// app.use('/signup', Signup.router)
+
+
+app.get('/', (req: Request, res: Response) => {
+    res.send('Hello world!');
+});
 
 
 
