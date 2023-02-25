@@ -8,15 +8,20 @@ import morgan from "morgan"
 import connectDB from "./config/dbConn"
 import mongoose from "mongoose"
 import session from "express-session"
-import passport from "passport"
 import MongoStore from "connect-mongo"
 import * as Signup from "./routes/signup";
 import * as Login from "./routes/login"
+// import passport from "./config/passportLocal"
+import passport from "passport"
+import { passportConfig } from "./config/passportLocal"
+import isAuthenticated from "./middleware/auth"
+
+
+passportConfig(passport)
 
 
 
-
-const PORT = process.env.DB_PORT || 3500
+const PORT = process.env.DB_PORT 
 connectDB();
 
 // built-in middleware for json 
@@ -28,23 +33,30 @@ app.use(express.urlencoded({ extended: false }))
 //middleware for logging
 app.use(morgan('dev'))
 
-//express sessions
 app.use(session({
     secret: 'beatstashsessions',
     resave: false,
     saveUninitialized: false,
-    cookie: { secure: true }
-    // store: new MongoStore({mongooseConnection:mongoose.connection})
+
+    store: MongoStore.create({mongoUrl:process.env.DB_URL})
 
 }));
 
 //passport middleware
+// app.use(passport.initialize())
+// app.use(passport.session())
 app.use(passport.authenticate('session'))
 
 app.use('/signup', Signup.router)
 
 
 app.use('/login',Login.router)
+
+// app.use(isAuthenticated)
+app.get('/getdata',isAuthenticated,(req,res)=>{
+    console.log(req.isAuthenticated())
+    res.json({'message':'this is ur data'})
+})
 
 
 

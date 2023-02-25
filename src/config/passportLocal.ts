@@ -1,11 +1,12 @@
 import { Strategy as LocalStrategy } from 'passport-local'
-import passport = require('passport');
+// import passport from 'passport';
+
 import bcrypt from "bcrypt"
 import User from '../model/User';
 
 
-
-
+export const passportConfig=(passport:any)=>{
+    
 passport.use(new LocalStrategy(
     { usernameField: 'email', passwordField: "password" }, async (email: string, password: string, done) => {
         try {
@@ -13,7 +14,7 @@ passport.use(new LocalStrategy(
             if (!foundUser) return done(null, false, { message: 'user not found' })
             const passwordmatch = await bcrypt.compare(password, foundUser.password)
             if (passwordmatch) {
-                console.log(foundUser)
+                // console.log(foundUser)
                 //generate otp
                 //send email
                 return done(null, foundUser, { message: 'user  found' })
@@ -32,14 +33,46 @@ passport.use(new LocalStrategy(
     }))
 
 
-// passport.serializeUser((foundUser, done) => {
-//     process.nextTick(() => {
-//         done(null, { id: foundUser.id, username: foundUser.email });
-//     });
-// });
+passport.serializeUser((foundUser:any, done:any) => {
+    process.nextTick(() => {
+        console.log('serializer called')
+        done(null, { id: foundUser._id});
+    });
+});
 
-// passport.deserializeUser((foundUser, done) => {
-//     process.nextTick(() => {
-//         done(null, { id: foundUser.id, username: foundUser.email });
-//     });
-// });
+passport.deserializeUser((id:any, done:any) => {
+
+    process.nextTick(async () => {
+        console.log('deserializer called')
+        // console.log(id)
+        try{
+            const user= await User.findById(id.id)
+            done(null,user)
+        
+            
+
+        }
+        catch (error) {
+            if (error instanceof Error) {
+                console.error(`this is an error ${error.message}`)
+            }
+
+
+        }
+
+        
+
+    });
+});
+
+
+
+}
+
+
+    
+
+
+
+
+
