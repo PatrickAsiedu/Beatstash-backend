@@ -1,8 +1,8 @@
 import express from "express";
 const router = express.Router();
-import passport from 'passport'
-import  loginConroller  from "../controllers/loginController";
-import { Response,Request,NextFunction } from "express"
+import passport from "passport";
+import loginConroller from "../controllers/loginController";
+import { Response, Request, NextFunction } from "express";
 
 // router.post('/', (req,res,next)=>{
 //     console.log('login called')
@@ -11,15 +11,13 @@ import { Response,Request,NextFunction } from "express"
 //         req.logIn(user, (err)=>{
 //             if(err) throw err
 //             res.status(201).json({'mesage':'user logged'})
-           
+
 //         })
 //         } )(req,res,next)
-
 
 // }
 // )
 
-router.post('/',loginConroller)
+router.post("/", loginConroller);
 
-
-export {router}
+export { router };
