@@ -1,0 +1,12 @@
+import { Response, Request, NextFunction } from "express";
+import allowedOrigins from "../config/allowedOrigins";
+
+const credentails = (req: Request, res: Response, next: NextFunction) => {
+  const origin = req.header("Origin");
+  if (allowedOrigins.includes(origin as string)) {
+    res.header("Access-Control-Allow-Credentials");
+  }
+  next();
+};
+
+export default credentails;
