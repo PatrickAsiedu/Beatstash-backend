@@ -19,6 +19,7 @@ interface User {
 const UserSchema = new Schema({
     email: {
         type: String,
+        unique:true,
         required: true
     },
     firstname: {
@@ -40,7 +41,10 @@ const UserSchema = new Schema({
         Producer: String,
         // required: true
     }
+  
 
-})
+},   { timestamps:true })
 
-export default mongoose.model('User', UserSchema);
+const User= mongoose.model('User', UserSchema)
+
+export default User ;

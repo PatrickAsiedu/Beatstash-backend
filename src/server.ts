@@ -27,9 +27,9 @@ connectDB();
 //middleware for logging
 app.use(morgan("dev"));
 
-// app.use(credentails)
+// app.use(credentials)
 
-// app.use(cors(CorsOptions));
+app.use(cors(CorsOptions));
 
 // built-in middleware for json
 app.use(express.json());
@@ -50,9 +50,13 @@ app.use(
 //passport middleware
 // app.use(passport.initialize())
 // app.use(passport.session())
+
+
 app.use(passport.authenticate("session"));
 
+
 app.use("/signup", Signup.router);
+
 
 app.use("/login", Login.router);
 

@@ -7,6 +7,10 @@ type Userdata = {
   password: string;
 };
 
+//@desc Login
+//@route POST /login
+//@access Public
+
 const handleSIgnUp = async (req: Request, res: Response) => {
   console.log(req.body);
   const { email, password }: Userdata = req.body;
@@ -30,7 +34,11 @@ const handleSIgnUp = async (req: Request, res: Response) => {
       password: hashedPassword,
     });
     console.log(newUser);
-    res.status(201).json({ success: `New user ${email} created` });
+    // res.status(201).json({ success: `New user ${email} created` });
+    res.status(201).json({
+      _id:newUser._id,
+      email:newUser.email
+    } );
   } catch (err) {
     if (err instanceof Error) res.status(500).json({ message: err.message });
   }

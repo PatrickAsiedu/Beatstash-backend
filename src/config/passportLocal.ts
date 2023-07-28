@@ -46,10 +46,11 @@ export const passportConfig = (passport: any) => {
   passport.deserializeUser((id: any, done: any) => {
     process.nextTick(async () => {
       console.log("deserializer called");
-      // console.log(id)
+      console.log(id)
       try {
         const user = await User.findById(id.id);
         done(null, user);
+        console.log(user)
       } catch (error) {
         if (error instanceof Error) {
           console.error(`this is an error ${error.message}`);
