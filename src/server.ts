@@ -11,7 +11,8 @@ import MongoStore from "connect-mongo";
 import cors from "cors";
 
 import * as Signup from "./routes/signup";
-import * as Login from "./routes/login";
+import * as Login from "./routes/auth";
+import * as Logout from "./routes/logout"
 // import passport from "./config/passportLocal"
 import passport from "passport";
 import { passportConfig } from "./config/passportLocal";
@@ -29,7 +30,7 @@ app.use(morgan("dev"));
 
 // app.use(credentials)
 
-app.use(cors(CorsOptions));
+// app.use(cors(CorsOptions));
 
 // built-in middleware for json
 app.use(express.json());
@@ -59,6 +60,8 @@ app.use("/signup", Signup.router);
 
 
 app.use("/login", Login.router);
+
+app.use("/logout", Logout.router )
 
 // app.use(isAuthenticated)
 app.get("/getdata", isAuthenticated, (req, res) => {

@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 import passport from "passport";
-import loginConroller from "../controllers/loginController";
+import authConroller from "../controllers/authController";
 import { Response, Request, NextFunction } from "express";
 
 // router.post('/', (req,res,next)=>{
@@ -18,6 +18,6 @@ import { Response, Request, NextFunction } from "express";
 // }
 // )
 
-router.post("/", loginConroller);
+router.post("/", authConroller);
 
 export { router };

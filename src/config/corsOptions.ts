@@ -3,7 +3,7 @@ type origin = string | undefined;
 
 const CorsOptions = {
   origin: (origin: origin, callback: any) => {
-    if (origin !== undefined) {
+    if (typeof origin !== "undefined") {
       if (allowedOrigins.indexOf(origin) !== -1) {
         callback(null, true);
       } else {

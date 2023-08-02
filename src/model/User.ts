@@ -34,11 +34,11 @@ const UserSchema = new Schema({
         required: true
     },
     roles: {
-        Lisener: {
-            type: String,
-            default: 'listener'
+        Listener: {
+            type: Number,
+            default: 2000
         },
-        Producer: String,
+        Producer: Number,
         // required: true
     }
   
