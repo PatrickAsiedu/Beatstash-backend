@@ -14,9 +14,10 @@ import * as Signup from "./routes/signup";
 import * as Login from "./routes/login";
 // import passport from "./config/passportLocal"
 import passport from "passport";
-import { passportConfig } from "./config/passportLocal";
+import { passportConfig } from "./config/passportConfig";
 import isAuthenticated from "./middleware/auth";
 import CorsOptions from "./config/corsOptions";
+import * as useGoogle from "./routes/usegoogle";
 // import credentails from "./middleware/credentials";
 
 passportConfig(passport);
@@ -55,6 +56,22 @@ app.use(passport.authenticate("session"));
 app.use("/signup", Signup.router);
 
 app.use("/login", Login.router);
+
+app.use("/auth/google", useGoogle.router);
+
+app.get(
+  "/auth/google/callback",
+  passport.authenticate("google", {
+    failureRedirect: "http://localhost:3000/signin",
+    scope: ["profile", "email"],
+    session: true,
+  }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect("http://localhost:3000");
+    console.log(req.isAuthenticated());
+  }
+);
 
 // app.use(isAuthenticated)
 app.get("/getdata", isAuthenticated, (req, res) => {
