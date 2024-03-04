@@ -1,4 +1,5 @@
 import allowedOrigins from "./allowedOrigins";
+import credentials from "../middleware/credentials";
 type origin = string | undefined;
 
 const CorsOptions = {
@@ -13,6 +14,7 @@ const CorsOptions = {
       callback(new Error("Not allowed by CORS"));
     }
   },
+  credentials: true,
   // optionsSuccessStatus: 200,
 };
 
