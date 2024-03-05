@@ -20,6 +20,7 @@ import CorsOptions from "./config/corsOptions";
 import credentials from "./middleware/credentials";
 import * as useGoogle from "./routes/usegoogle";
 import * as Logout from "./routes/logout";
+import * as PostBeat from "./routes/postbeat";
 // import credentails from "./middleware/credentials";
 
 passportConfig(passport);
@@ -80,6 +81,8 @@ app.get(
     console.log(req.isAuthenticated());
   }
 );
+
+app.use("/postbeats", PostBeat.router);
 
 // app.use(isAuthenticated)
 app.get("/getdata", isAuthenticated, (req, res) => {

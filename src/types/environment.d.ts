@@ -6,6 +6,10 @@ declare global {
       DB_URL: string;
       GOOGLE_CLIENT_ID: string;
       GOOGLE_CLIENT_SECRET: string;
+      AWS_S3BUCKET_ACCESS_KEY_ID: string;
+      AWS_S3BUCKET_SECRETACCESSK_KEY: string;
+      AWS_REGION: string;
+      AWS_BUCKET_NAME: string;
     }
   }
 }
