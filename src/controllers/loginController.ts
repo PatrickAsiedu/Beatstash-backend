@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import passport from "passport";
 
-const loginConroller = (req: Request, res: Response, next: NextFunction) => {
+const handleLogin = (req: Request, res: Response, next: NextFunction) => {
   console.log("login called");
   passport.authenticate("local", (err: any, user: any, info: any) => {
     if (!user) return res.status(401).json({ message: "user nor found" });
@@ -12,4 +12,4 @@ const loginConroller = (req: Request, res: Response, next: NextFunction) => {
   })(req, res, next);
 };
 
-export default loginConroller;
+export { handleLogin };

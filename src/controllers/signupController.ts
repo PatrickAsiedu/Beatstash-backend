@@ -35,4 +35,4 @@ const handleSIgnUp = async (req: Request, res: Response) => {
     if (err instanceof Error) res.status(500).json({ message: err.message });
   }
 };
-export default handleSIgnUp;
+export { handleSIgnUp };

@@ -1,11 +1,8 @@
-import express from 'express';
-import handleSIgnUp from '../controllers/signUpController';
-
+import express from "express";
+import * as SignupController from "../controllers/signupController";
 
 const router = express.Router();
 
+router.post("/", SignupController.handleSIgnUp);
 
-
-router.post('/', handleSIgnUp)
-
-export { router }
+export { router };
