@@ -17,7 +17,11 @@ import passport from "passport";
 import { passportConfig } from "./config/passportConfig";
 import isAuthenticated from "./middleware/auth";
 import CorsOptions from "./config/corsOptions";
+import credentials from "./middleware/credentials";
 import * as useGoogle from "./routes/usegoogle";
+import * as Logout from "./routes/logout";
+import * as PostBeat from "./routes/postbeat";
+import * as UseGoogle from "./routes/usegoogle";
 // import credentails from "./middleware/credentials";
 
 passportConfig(passport);
@@ -28,7 +32,7 @@ connectDB();
 //middleware for logging
 app.use(morgan("dev"));
 
-// app.use(credentails)
+// app.use(credentials);
 
 // app.use(cors(CorsOptions));
 
@@ -56,22 +60,11 @@ app.use(passport.authenticate("session"));
 app.use("/signup", Signup.router);
 
 app.use("/login", Login.router);
+app.use("/logout", Logout.router);
 
-app.use("/auth/google", useGoogle.router);
+app.use("/auth", useGoogle.router);
 
-app.get(
-  "/auth/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: "http://localhost:3000/signin",
-    scope: ["profile", "email"],
-    session: true,
-  }),
-  function (req, res) {
-    // Successful authentication, redirect home.
-    res.redirect("http://localhost:3000");
-    console.log(req.isAuthenticated());
-  }
-);
+app.use("/postbeats", PostBeat.router);
 
 // app.use(isAuthenticated)
 app.get("/getdata", isAuthenticated, (req, res) => {
