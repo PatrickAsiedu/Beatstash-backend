@@ -5,6 +5,6 @@ import multer from "multer";
 const router = Router();
 const upload = multer();
 
-router.post("/", upload.single("beat"), postBeatController.handlePostBeat);
+router.post("/", upload.array("files"), postBeatController.handlePostBeat);
 
 export { router };
