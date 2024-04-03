@@ -9,41 +9,37 @@ const AddNewBeat: RequestHandler = async (req, res, next) => {
   console.log(req.files);
   // if(req.files !== undefined){
   //   console.log(req.files[][0]:req.files);
-
   // }
-
-  console.log(req.body);
-
-  try {
-    const uploadArtWork = await client.send(
-      new PutObjectCommand({
-        Bucket: process.env.AWS_BUCKET_NAME,
-        Key: req.file?.originalname,
-        Body: req.file?.buffer,
-      })
-    );
-    const uploadMp3 = await client.send(
-      new PutObjectCommand({
-        Bucket: process.env.AWS_BUCKET_NAME,
-        Key: req.file?.originalname,
-        Body: req.file?.buffer,
-      })
-    );
-    const uploadWav = await client.send(
-      new PutObjectCommand({
-        Bucket: process.env.AWS_BUCKET_NAME,
-        Key: req.file?.originalname,
-        Body: req.file?.buffer,
-      })
-    );
-    res.status(200).send("Files uploaded");
-  } catch (error) {
-    if (error instanceof Error) {
-      console.error(error.message);
-      res.status(500).send("Failed to upload files");
-    }
-  }
-
+  // console.log(req.body);
+  // try {
+  //   const uploadArtWork = await client.send(
+  //     new PutObjectCommand({
+  //       Bucket: process.env.AWS_BUCKET_NAME,
+  //       Key: req.file?.originalname,
+  //       Body: req.file?.buffer,
+  //     })
+  //   );
+  //   const uploadMp3 = await client.send(
+  //     new PutObjectCommand({
+  //       Bucket: process.env.AWS_BUCKET_NAME,
+  //       Key: req.file?.originalname,
+  //       Body: req.file?.buffer,
+  //     })
+  //   );
+  //   const uploadWav = await client.send(
+  //     new PutObjectCommand({
+  //       Bucket: process.env.AWS_BUCKET_NAME,
+  //       Key: req.file?.originalname,
+  //       Body: req.file?.buffer,
+  //     })
+  //   );
+  //   res.status(200).send("Files uploaded");
+  // } catch (error) {
+  //   if (error instanceof Error) {
+  //     console.error(error.message);
+  //     res.status(500).send("Failed to upload files");
+  //   }
+  // }
   res.status(200).send("Files uploaded");
 };
 
