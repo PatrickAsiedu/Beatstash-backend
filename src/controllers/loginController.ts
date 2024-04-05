@@ -1,6 +1,9 @@
 import { Response, Request, NextFunction } from "express";
 import passport from "passport";
 
+// @desc Login
+// @route POST /auth
+// @access Public
 const handleLogin = (req: Request, res: Response, next: NextFunction) => {
   console.log("login called");
   passport.authenticate("local", (err: any, user: any, info: any) => {

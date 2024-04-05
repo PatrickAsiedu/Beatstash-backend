@@ -20,7 +20,7 @@ import CorsOptions from "./config/corsOptions";
 import credentials from "./middleware/credentials";
 import * as useGoogle from "./routes/usegoogle";
 import * as Logout from "./routes/logout";
-import * as PostBeat from "./routes/postbeat";
+import * as Beats from "./routes/beats";
 import * as UseGoogle from "./routes/usegoogle";
 // import credentails from "./middleware/credentials";
 
@@ -32,9 +32,9 @@ connectDB();
 //middleware for logging
 app.use(morgan("dev"));
 
-app.use(credentials);
+// app.use(credentials);
 
-app.use(cors(CorsOptions));
+// app.use(cors(CorsOptions));
 
 // built-in middleware for json
 app.use(express.json());
@@ -64,7 +64,7 @@ app.use("/logout", Logout.router);
 
 app.use("/auth", useGoogle.router);
 
-app.use("/postbeats", PostBeat.router);
+app.use("/beats", Beats.router);
 
 // app.use(isAuthenticated)
 app.get("/getdata", isAuthenticated, (req, res) => {
@@ -76,4 +76,9 @@ mongoose.connection.once("open", (): void => {
   console.log("Connected to MongoDB");
 
   app.listen(PORT, (): void => console.log(`Server running on port ${PORT}`));
+});
+
+mongoose.connection.on("error", (error) => {
+  console.error(error);
+  //log error
 });
