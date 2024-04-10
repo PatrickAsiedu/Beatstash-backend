@@ -4,6 +4,8 @@ import { RequestHandler } from "express";
 import { Files } from "../types/multerMultiFieldTypes";
 import uploadObject from "../services/s3bucket/uploadObject";
 import createPost from "../services/post/createPost";
+import Post from "../model/Post";
+import findPostList from "../services/post/findPostList";
 
 const AddNewBeat: RequestHandler = async (req, res, next) => {
   const data = req.body;
@@ -85,4 +87,16 @@ const AddNewBeat: RequestHandler = async (req, res, next) => {
   }
 };
 
-export { AddNewBeat };
+const getAllBeats: RequestHandler = (req, res, next) => {
+  const perPage = 10;
+  let page = parseInt(req.query.page as string) || 1;
+
+  if (!req.query.search) {
+    //for skipping through large n_o of docs, avoid skip and implement based on the data you have e.g. date
+    const beats = findPostList(page, perPage);
+
+    return res.json(beats);
+  }
+};
+
+export { AddNewBeat, getAllBeats };

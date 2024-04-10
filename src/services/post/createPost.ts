@@ -2,9 +2,7 @@ import Post from "../../model/Post";
 
 const createPost = async (post: any) => {
   try {
-    const newPost = await Post.create(post);
-    // return newPost;
-    // console.log(newPost);
+    await Post.create(post);
   } catch (error) {
     if (error instanceof Error) {
       console.error(error.message);
