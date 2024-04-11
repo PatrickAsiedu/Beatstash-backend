@@ -21,7 +21,8 @@ import credentials from "./middleware/credentials";
 import * as useGoogle from "./routes/usegoogle";
 import * as Logout from "./routes/logout";
 import * as Beats from "./routes/beats";
-import * as UseGoogle from "./routes/usegoogle";
+import { trapPosts } from "./services/generateFakeData";
+import Post from "./model/Post";
 // import credentails from "./middleware/credentials";
 
 passportConfig(passport);
@@ -82,3 +83,7 @@ mongoose.connection.on("error", (error) => {
   console.error(error);
   //log error
 });
+
+// console.log(trapPosts);
+
+// Post.insertMany(trapPosts);

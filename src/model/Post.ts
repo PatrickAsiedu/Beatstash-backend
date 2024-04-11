@@ -20,4 +20,6 @@ const postSchema = new Schema(
   { timestamps: true }
 );
 
+postSchema.index({ title: "text", tags: "text" });
+
 export default mongoose.model("Post", postSchema);

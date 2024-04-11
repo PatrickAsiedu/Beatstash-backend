@@ -4,6 +4,8 @@ import { RequestHandler } from "express";
 import { Files } from "../types/multerMultiFieldTypes";
 import uploadObject from "../services/s3bucket/uploadObject";
 import createPost from "../services/post/createPost";
+import Post from "../model/Post";
+import findPostList from "../services/post/findPostList";
 
 const AddNewBeat: RequestHandler = async (req, res, next) => {
   const data = req.body;
@@ -85,4 +87,40 @@ const AddNewBeat: RequestHandler = async (req, res, next) => {
   }
 };
 
-export { AddNewBeat };
+const getAllBeats: RequestHandler = async (req, res, next) => {
+  const perPage = 10;
+
+  let page = parseInt(req.query.page as string) || 1;
+  let search = "";
+
+  console.log(page);
+  if (!req.query.search) {
+    //for skipping through large n_o of docs, avoid skip and implement based on the data you have e.g. date n cursor
+    const beats = await findPostList(page, perPage, {});
+    // console.log(perPage);
+    return res.status(200).json(beats);
+  }
+
+  if (req.query.search) {
+    const search = req.query.search as string;
+    console.log(search);
+    if (search.split(" ").length === 1) {
+      const beats = await findPostList(page, perPage, {
+        $text: { $search: search },
+      });
+      return res.status(200).json(beats);
+    } else {
+      const words = search.split(" ");
+      let allwords = "";
+      words.forEach((word) => (allwords = allwords + " " + word));
+      console.log(allwords);
+      console.log(`\"${search}\" ${allwords}`);
+      const beats = await findPostList(page, perPage, {
+        $text: { $search: `\"${search}\" ${allwords}` },
+      });
+      return res.status(200).json(beats);
+    }
+  }
+};
+
+export { AddNewBeat, getAllBeats };
