@@ -10,6 +10,7 @@ declare global {
       AWS_S3BUCKET_SECRETACCESSK_KEY: string;
       AWS_REGION: string;
       AWS_BUCKET_NAME: string;
+      OPEN_AI_API_KEY: string;
     }
   }
 }

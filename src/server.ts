@@ -84,6 +84,4 @@ mongoose.connection.on("error", (error) => {
   //log error
 });
 
-// console.log(trapPosts);
-
 // Post.insertMany(trapPosts);
