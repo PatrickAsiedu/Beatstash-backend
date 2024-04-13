@@ -153,7 +153,7 @@ let i = 0;
 trapRapSongTitles.forEach((title) => {
   if (i === 10) {
     i = 0;
-    const post = {
+    const postoriginal = {
       user: "64ca4f56f6fb8b30b6ffc9be",
       title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
       tags: [
@@ -174,11 +174,77 @@ trapRapSongTitles.forEach((title) => {
       mp3: "hhhh",
       wav: "hhhh",
     };
-    trapPosts.push(post);
+    const postnoartintitle = {
+      user: "64ca4f56f6fb8b30b6ffc9be",
+      title: title,
+      tags: [
+        topTrapArtistsUSA[i],
+        topTrapArtistsUSA[i] + " " + "type beat",
+        topTrapArtistsUSA[i].split(" ").join(""),
+        topTrapArtistsUSA[i] +
+          " " +
+          "x" +
+          " " +
+          topTrapArtistsUSA[i + 1] +
+          " " +
+          "type beat",
+      ],
+      key: topKeysTrap[i],
+      bpm: topBPMsTrap[i],
+      artwork: "hhh",
+      mp3: "hhhh",
+      wav: "hhhh",
+    };
+    const postnotags = {
+      user: "64ca4f56f6fb8b30b6ffc9be",
+      title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
+      tags: [""],
+      key: topKeysTrap[i],
+      bpm: topBPMsTrap[i],
+      artwork: "hhh",
+      mp3: "hhhh",
+      wav: "hhhh",
+    };
+    const posttagsnotrim = {
+      user: "64ca4f56f6fb8b30b6ffc9be",
+      title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
+      tags: [
+        topTrapArtistsUSA[i],
+        topTrapArtistsUSA[i] + " " + "type beat",
+        topTrapArtistsUSA[i] +
+          " " +
+          "x" +
+          " " +
+          topTrapArtistsUSA[i + 1] +
+          " " +
+          "type beat",
+      ],
+      key: topKeysTrap[i],
+      bpm: topBPMsTrap[i],
+      artwork: "hhh",
+      mp3: "hhhh",
+      wav: "hhhh",
+    };
+    const postexclusive = {
+      user: "64ca4f56f6fb8b30b6ffc9be",
+      title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
+      tags: [
+        topTrapArtistsUSA[i],
+        topTrapArtistsUSA[i] + " " + "type beat",
+        topTrapArtistsUSA[i].split(" ").join(""),
+      ],
+      key: topKeysTrap[i],
+      bpm: topBPMsTrap[i],
+      artwork: "hhh",
+      mp3: "hhhh",
+      wav: "hhhh",
+    };
+
+    trapPosts.push(postexclusive);
     i++;
   }
 
-  const post = {
+  const postoriginal = {
     user: "64ca4f56f6fb8b30b6ffc9be",
     title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
     tags: [
@@ -199,39 +265,71 @@ trapRapSongTitles.forEach((title) => {
     mp3: "hhhh",
     wav: "hhhh",
   };
-  trapPosts.push(post);
+  const postnoartintitle = {
+    user: "64ca4f56f6fb8b30b6ffc9be",
+    title: title,
+    tags: [
+      topTrapArtistsUSA[i],
+      topTrapArtistsUSA[i] + " " + "type beat",
+      topTrapArtistsUSA[i].split(" ").join(""),
+      topTrapArtistsUSA[i] +
+        " " +
+        "x" +
+        " " +
+        topTrapArtistsUSA[i + 1] +
+        " " +
+        "type beat",
+    ],
+    key: topKeysTrap[i],
+    bpm: topBPMsTrap[i],
+    artwork: "hhh",
+    mp3: "hhhh",
+    wav: "hhhh",
+  };
+  const postnotags = {
+    user: "64ca4f56f6fb8b30b6ffc9be",
+    title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
+    tags: [""],
+    key: topKeysTrap[i],
+    bpm: topBPMsTrap[i],
+    artwork: "hhh",
+    mp3: "hhhh",
+    wav: "hhhh",
+  };
+  const posttagsnotrim = {
+    user: "64ca4f56f6fb8b30b6ffc9be",
+    title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
+    tags: [
+      topTrapArtistsUSA[i],
+      topTrapArtistsUSA[i] + " " + "type beat",
+      topTrapArtistsUSA[i] +
+        " " +
+        "x" +
+        " " +
+        topTrapArtistsUSA[i + 1] +
+        " " +
+        "type beat",
+    ],
+    key: topKeysTrap[i],
+    bpm: topBPMsTrap[i],
+    artwork: "hhh",
+    mp3: "hhhh",
+    wav: "hhhh",
+  };
+  const postexclusive = {
+    user: "64ca4f56f6fb8b30b6ffc9be",
+    title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
+    tags: [
+      topTrapArtistsUSA[i],
+      topTrapArtistsUSA[i] + " " + "type beat",
+      topTrapArtistsUSA[i].split(" ").join(""),
+    ],
+    key: topKeysTrap[i],
+    bpm: topBPMsTrap[i],
+    artwork: "hhh",
+    mp3: "hhhh",
+    wav: "hhhh",
+  };
+  trapPosts.push(postexclusive);
   i++;
 });
-
-// for (let i = 0; i < 10; i++) {
-//   const post = {
-//     user: "64ca4f56f6fb8b30b6ffc9be",
-//     title:
-//       topTrapArtistsUSA[i] +
-//       " " +
-//       "type beat" +
-//       " " +
-//       "-" +
-//       " " +
-//       trapRapSongTitles[i],
-//     tags: [
-//       topTrapArtistsUSA[i],
-//       topTrapArtistsUSA[i] + " " + "type beat",
-//       topTrapArtistsUSA[i].split(" ").join(""),
-//       topTrapArtistsUSA[i] +
-//         " " +
-//         "x" +
-//         " " +
-//         topTrapArtistsUSA[i + 1] +
-//         " " +
-//         "type beat",
-//     ],
-//     key: topKeysTrap[i],
-//     bpm: topBPMsTrap[i],
-//     artwork: "hhh",
-//     mp3: "hhhh",
-//     wav: "hhhh",
-//   };
-//   trapPosts.push(post);
-// }
-// console.log(trapPosts);

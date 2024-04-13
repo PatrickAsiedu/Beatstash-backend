@@ -93,11 +93,11 @@ const getAllBeats: RequestHandler = async (req, res, next) => {
   let page = parseInt(req.query.page as string) || 1;
   let search = "";
 
-  console.log(page);
   if (!req.query.search) {
     //for skipping through large n_o of docs, avoid skip and implement based on the data you have e.g. date n cursor
-    const beats = await findPostList(page, perPage, {});
-    // console.log(perPage);
+    const beats = await findPostList(page, perPage, search, {});
+
+    console.log(beats?.length);
     return res.status(200).json(beats);
   }
 
@@ -105,20 +105,30 @@ const getAllBeats: RequestHandler = async (req, res, next) => {
     const search = req.query.search as string;
     console.log(search);
     if (search.split(" ").length === 1) {
-      const beats = await findPostList(page, perPage, {
+      const beats = await findPostList(page, perPage, search, {
         $text: { $search: search },
       });
-      return res.status(200).json(beats);
+      console.log(beats?.length);
+      typeof beats !== "undefined" && beats?.length > 0
+        ? res.status(200).json(beats)
+        : res.status(404).json({ message: "no data matches query" });
     } else {
-      const words = search.split(" ");
-      let allwords = "";
-      words.forEach((word) => (allwords = allwords + " " + word));
-      console.log(allwords);
-      console.log(`\"${search}\" ${allwords}`);
-      const beats = await findPostList(page, perPage, {
-        $text: { $search: `\"${search}\" ${allwords}` },
+      // const words = search.split(" ");
+      // let allwords = "";
+      // words.forEach((word) => (allwords = allwords + " " + word));
+      // // console.log(allwords);
+      // // console.log(`\"${search}\" ${allwords}`);
+      // // console.log(`${search} ${search.split(" ").join("")}`)
+      // // console.log(`\'${search}\' \'${allwords}\' `);
+      // console.log(`\'${search}\' \'${search.split(" ").join("")}\' `);
+      //double quotes for logical and single for or
+      const beats = await findPostList(page, perPage, search, {
+        $text: { $search: `\'${search}\' \'${search.split(" ").join("")}\' ` }, //logical OR b2n phrases + OR b2n terms of the phrases
       });
-      return res.status(200).json(beats);
+      console.log(beats?.length);
+      typeof beats !== "undefined" && beats?.length > 0
+        ? res.status(200).json(beats)
+        : res.status(404).json({ message: "no data matches query" });
     }
   }
 };
