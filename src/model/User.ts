@@ -39,4 +39,9 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
+// userSchema.virtual("id").get(() => {
+
+//   return this._id.toHexString();
+// });
+
 export default mongoose.model("User", userSchema);

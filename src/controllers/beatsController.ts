@@ -93,12 +93,12 @@ const getAllBeats: RequestHandler = async (req, res, next) => {
   let page = parseInt(req.query.page as string) || 1;
   let search = "";
 
-  if (!req.query.search) {
+  if (!req.query.search || req.query.search === "") {
     //for skipping through large n_o of docs, avoid skip and implement based on the data you have e.g. date n cursor
     const beats = await findPostList(page, perPage, search, {});
 
     console.log(beats?.length);
-    return res.status(200).json(beats);
+    return res.status(200).json({ perPage, posts: beats });
   }
 
   if (req.query.search) {
@@ -110,7 +110,7 @@ const getAllBeats: RequestHandler = async (req, res, next) => {
       });
       console.log(beats?.length);
       typeof beats !== "undefined" && beats?.length > 0
-        ? res.status(200).json(beats)
+        ? res.status(200).json({ posts: beats })
         : res.status(404).json({ message: "no data matches query" });
     } else {
       // const words = search.split(" ");
@@ -127,7 +127,7 @@ const getAllBeats: RequestHandler = async (req, res, next) => {
       });
       console.log(beats?.length);
       typeof beats !== "undefined" && beats?.length > 0
-        ? res.status(200).json(beats)
+        ? res.status(200).json({ posts: beats })
         : res.status(404).json({ message: "no data matches query" });
     }
   }

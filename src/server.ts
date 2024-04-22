@@ -33,9 +33,9 @@ connectDB();
 //middleware for logging
 app.use(morgan("dev"));
 
-// app.use(credentials);
+app.use(credentials);
 
-// app.use(cors(CorsOptions));
+app.use(cors(CorsOptions));
 
 // built-in middleware for json
 app.use(express.json());
@@ -71,6 +71,10 @@ app.use("/beats", Beats.router);
 app.get("/getdata", isAuthenticated, (req, res) => {
   console.log(req.isAuthenticated());
   res.json({ message: "this is ur data" });
+});
+
+app.use("/", (req, res) => {
+  res.send("Welcome to Beatsash Server");
 });
 
 mongoose.connection.once("open", (): void => {
