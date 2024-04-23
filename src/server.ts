@@ -20,9 +20,10 @@ import CorsOptions from "./config/corsOptions";
 import credentials from "./middleware/credentials";
 import * as useGoogle from "./routes/usegoogle";
 import * as Logout from "./routes/logout";
-import * as Beats from "./routes/beats";
+import * as Beats from "./routes/api/beats";
 import { trapPosts } from "./services/generateFakeData";
 import Post from "./model/Post";
+import * as Users from "./routes/api/users";
 // import credentails from "./middleware/credentials";
 
 passportConfig(passport);
@@ -66,6 +67,8 @@ app.use("/logout", Logout.router);
 app.use("/auth", useGoogle.router);
 
 app.use("/beats", Beats.router);
+
+app.use("/members", Users.router);
 
 // app.use(isAuthenticated)
 app.get("/getdata", isAuthenticated, (req, res) => {
