@@ -29,7 +29,7 @@ const getAllBeats: RequestHandler = async (req, res, next) => {
 
     // console.log(total);
     // console.log(beats?.length);
-    return res.status(200).json({ perPage, total, beats });
+    return res.status(200).json({ perPage, total, posts: beats });
   }
 
   if (req.query.search) {
@@ -44,9 +44,9 @@ const getAllBeats: RequestHandler = async (req, res, next) => {
           $text: { $search: search },
         }
       );
-      // console.log(beats?.length);
+      console.log(beats?.length);
       typeof beats !== "undefined" && beats?.length > 0
-        ? res.status(200).json({ perPage, total, beats })
+        ? res.status(200).json({ perPage, total, posts: beats })
         : res.status(404).json({ message: "no data matches query" });
     } else {
       // const words = search.split(" ");
@@ -70,7 +70,7 @@ const getAllBeats: RequestHandler = async (req, res, next) => {
       );
       // console.log(beats?.length);
       typeof beats !== "undefined" && beats?.length > 0
-        ? res.status(200).json({ perPage, total, beats })
+        ? res.status(200).json({ perPage, total, posts: beats })
         : res.status(404).json({ message: "no data matches query" });
     }
   }
