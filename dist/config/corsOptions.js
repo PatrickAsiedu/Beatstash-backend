@@ -15,7 +15,8 @@ const CorsOptions = {
             }
         }
         else {
-            callback(new Error("Not allowed by CORS"));
+            // callback(new Error("Not allowed by CORS")); //do not allow if theres no origin
+            callback(null, true);
         }
     },
     credentials: true,

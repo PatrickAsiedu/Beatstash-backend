@@ -35,23 +35,27 @@ const dbConn_1 = __importDefault(require("./config/dbConn"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const express_session_1 = __importDefault(require("express-session"));
 const connect_mongo_1 = __importDefault(require("connect-mongo"));
+const cors_1 = __importDefault(require("cors"));
 const Signup = __importStar(require("./routes/signup"));
 const Login = __importStar(require("./routes/login"));
 // import passport from "./config/passportLocal"
 const passport_1 = __importDefault(require("passport"));
 const passportConfig_1 = require("./config/passportConfig");
 const auth_1 = __importDefault(require("./middleware/auth"));
+const corsOptions_1 = __importDefault(require("./config/corsOptions"));
+const credentials_1 = __importDefault(require("./middleware/credentials"));
 const useGoogle = __importStar(require("./routes/usegoogle"));
 const Logout = __importStar(require("./routes/logout"));
-const Beats = __importStar(require("./routes/beats"));
+const Beats = __importStar(require("./routes/api/beats"));
+const Users = __importStar(require("./routes/api/users"));
 // import credentails from "./middleware/credentials";
 (0, passportConfig_1.passportConfig)(passport_1.default);
 const PORT = process.env.DB_PORT;
 (0, dbConn_1.default)();
 //middleware for logging
 app.use((0, morgan_1.default)("dev"));
-// app.use(credentials);
-// app.use(cors(CorsOptions));
+app.use(credentials_1.default);
+app.use((0, cors_1.default)(corsOptions_1.default));
 // built-in middleware for json
 app.use(express_1.default.json());
 // built-in middleware to handle urlencoded form data
@@ -71,10 +75,14 @@ app.use("/login", Login.router);
 app.use("/logout", Logout.router);
 app.use("/auth", useGoogle.router);
 app.use("/beats", Beats.router);
+app.use("/members", Users.router);
 // app.use(isAuthenticated)
 app.get("/getdata", auth_1.default, (req, res) => {
     console.log(req.isAuthenticated());
     res.json({ message: "this is ur data" });
+});
+app.use("/", (req, res) => {
+    res.send("Welcome to Beatsash Server");
 });
 mongoose_1.default.connection.once("open", () => {
     console.log("Connected to MongoDB");

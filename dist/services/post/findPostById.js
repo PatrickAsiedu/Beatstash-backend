@@ -12,23 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const client_s3_1 = require("@aws-sdk/client-s3");
-const awsbucketConfig_1 = __importDefault(require("../../config/awsbucketConfig"));
-const client = new client_s3_1.S3Client(awsbucketConfig_1.default);
-const uploadObject = (file, id, dir) => __awaiter(void 0, void 0, void 0, function* () {
-    const key = `users/${id}/files/${dir}/${file.originalname}`;
+const Post_1 = __importDefault(require("../../model/Post"));
+const findPostById = (_id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const upload = yield client.send(new client_s3_1.PutObjectCommand({
-            Bucket: process.env.AWS_BUCKET_NAM,
-            Key: key,
-            Body: file.buffer,
-        }));
-        // return upload;
+        const post = yield Post_1.default.findById(_id);
+        return post;
     }
     catch (error) {
         if (error instanceof Error) {
             console.error(error.message);
         }
+        throw new Error("An error occured while querying Post");
     }
 });
-exports.default = uploadObject;
+exports.default = findPostById;

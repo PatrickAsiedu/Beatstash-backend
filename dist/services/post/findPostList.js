@@ -13,6 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Post_1 = __importDefault(require("../../model/Post"));
+// interface PostListResult {
+//   total: number;
+//   posts: PostDocument[];
+// }
 const findPostList = (page, perPage, search, filter) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const options = search
@@ -23,7 +27,7 @@ const findPostList = (page, perPage, search, filter) => __awaiter(void 0, void 0
         const projection = search
             ? { title: 1, tags: 1, score: { $meta: "textScore" } }
             : { title: 1, tags: 1 };
-        const posts = Post_1.default.find(filter, projection, options)
+        const postsP = Post_1.default.find(filter, projection, options)
             .populate({
             path: "user",
             select: { _id: 0, email: 1 },
@@ -31,12 +35,15 @@ const findPostList = (page, perPage, search, filter) => __awaiter(void 0, void 0
             .limit(perPage)
             .skip((page - 1) * perPage)
             .exec();
-        return posts;
+        const totalP = Post_1.default.countDocuments(filter);
+        const [posts, total] = yield Promise.all([postsP, totalP]);
+        return { total, posts };
     }
     catch (error) {
         if (error instanceof Error) {
             console.error(error.message);
         }
+        throw new Error("An error occured while querying Posts");
     }
 });
 exports.default = findPostList;

@@ -34,7 +34,7 @@ const postSchema = new mongoose_1.Schema({
         ref: User_1.default,
         required: true,
     },
-    title: String,
+    title: { type: String, required: true },
     tags: [String],
     key: String,
     bpm: String,
@@ -43,4 +43,10 @@ const postSchema = new mongoose_1.Schema({
     wav: String,
 }, { timestamps: true });
 postSchema.index({ title: "text", tags: "text" });
+postSchema.virtual("id").get(function () {
+    return this._id.toHexString();
+});
+postSchema.set("toJSON", {
+    virtuals: true,
+});
 exports.default = mongoose_1.default.model("Post", postSchema);

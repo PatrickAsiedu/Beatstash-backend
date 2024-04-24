@@ -12,11 +12,72 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllBeats = exports.AddNewBeat = void 0;
+exports.getBeat = exports.getAllBeats = exports.addNewBeat = void 0;
 const uploadObject_1 = __importDefault(require("../services/s3bucket/uploadObject"));
 const createPost_1 = __importDefault(require("../services/post/createPost"));
 const findPostList_1 = __importDefault(require("../services/post/findPostList"));
-const AddNewBeat = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const findPostById_1 = __importDefault(require("../services/post/findPostById"));
+// @desc Get all beats
+// @route GET /beats
+// @access Public
+const getAllBeats = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const perPage = 10;
+    let page = parseInt(req.query.page) || 1;
+    let search = "";
+    if (!req.query.search || req.query.search === "") {
+        //for skipping through large n_o of docs, avoid skip and implement based on the data you have e.g. date n cursor
+        const { total, posts: beats } = yield (0, findPostList_1.default)(page, perPage, search, {});
+        // console.log(total);
+        // console.log(beats?.length);
+        return res.status(200).json({ perPage, total, posts: beats });
+    }
+    if (req.query.search) {
+        const search = req.query.search;
+        console.log(search);
+        if (search.split(" ").length === 1) {
+            const { total, posts: beats } = yield (0, findPostList_1.default)(page, perPage, search, {
+                $text: { $search: search },
+            });
+            console.log(beats === null || beats === void 0 ? void 0 : beats.length);
+            typeof beats !== "undefined" && (beats === null || beats === void 0 ? void 0 : beats.length) > 0
+                ? res.status(200).json({ perPage, total, posts: beats })
+                : res.status(404).json({ message: "no data matches query" });
+        }
+        else {
+            // const words = search.split(" ");
+            // let allwords = "";
+            // words.forEach((word) => (allwords = allwords + " " + word));
+            // // console.log(allwords);
+            // // console.log(`\"${search}\" ${allwords}`);
+            // // console.log(`${search} ${search.split(" ").join("")}`)
+            // // console.log(`\'${search}\' \'${allwords}\' `);
+            // console.log(`\'${search}\' \'${search.split(" ").join("")}\' `);
+            //double quotes for logical and single for or
+            const { total, posts: beats } = yield (0, findPostList_1.default)(page, perPage, search, {
+                $text: {
+                    $search: `\'${search}\' \'${search.split(" ").join("")}\' `,
+                }, //logical OR b2n phrases + OR b2n terms of the phrases
+            });
+            // console.log(beats?.length);
+            typeof beats !== "undefined" && (beats === null || beats === void 0 ? void 0 : beats.length) > 0
+                ? res.status(200).json({ perPage, total, posts: beats })
+                : res.status(404).json({ message: "no data matches query" });
+        }
+    }
+});
+exports.getAllBeats = getAllBeats;
+// @desc Get a beat
+// @route GET /beats/id
+// @access Public
+const getBeat = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const id = "111111";
+    const beat = yield (0, findPostById_1.default)(id);
+});
+exports.getBeat = getBeat;
+// @desc Add a beat
+// @route POST /beats
+// @access Private
+const addNewBeat = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const data = req.body;
     console.log(data);
     const userId = "64ca4f56f6fb8b30b6ffc9be";
@@ -85,47 +146,4 @@ const AddNewBeat = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         });
     }
 });
-exports.AddNewBeat = AddNewBeat;
-const getAllBeats = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const perPage = 10;
-    let page = parseInt(req.query.page) || 1;
-    let search = "";
-    if (!req.query.search) {
-        //for skipping through large n_o of docs, avoid skip and implement based on the data you have e.g. date n cursor
-        const beats = yield (0, findPostList_1.default)(page, perPage, search, {});
-        console.log(beats === null || beats === void 0 ? void 0 : beats.length);
-        return res.status(200).json(beats);
-    }
-    if (req.query.search) {
-        const search = req.query.search;
-        console.log(search);
-        if (search.split(" ").length === 1) {
-            const beats = yield (0, findPostList_1.default)(page, perPage, search, {
-                $text: { $search: search },
-            });
-            console.log(beats === null || beats === void 0 ? void 0 : beats.length);
-            typeof beats !== "undefined" && (beats === null || beats === void 0 ? void 0 : beats.length) > 0
-                ? res.status(200).json(beats)
-                : res.status(404).json({ message: "no data matches query" });
-        }
-        else {
-            // const words = search.split(" ");
-            // let allwords = "";
-            // words.forEach((word) => (allwords = allwords + " " + word));
-            // // console.log(allwords);
-            // // console.log(`\"${search}\" ${allwords}`);
-            // // console.log(`${search} ${search.split(" ").join("")}`)
-            // // console.log(`\'${search}\' \'${allwords}\' `);
-            // console.log(`\'${search}\' \'${search.split(" ").join("")}\' `);
-            //double quotes for logical and single for or
-            const beats = yield (0, findPostList_1.default)(page, perPage, search, {
-                $text: { $search: `\'${search}\' \'${search.split(" ").join("")}\' ` }, //logical OR b2n phrases + OR b2n terms of the phrases
-            });
-            console.log(beats === null || beats === void 0 ? void 0 : beats.length);
-            typeof beats !== "undefined" && (beats === null || beats === void 0 ? void 0 : beats.length) > 0
-                ? res.status(200).json(beats)
-                : res.status(404).json({ message: "no data matches query" });
-        }
-    }
-});
-exports.getAllBeats = getAllBeats;
+exports.addNewBeat = addNewBeat;
