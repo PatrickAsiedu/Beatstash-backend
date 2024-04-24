@@ -6,8 +6,89 @@ import uploadObject from "../services/s3bucket/uploadObject";
 import createPost from "../services/post/createPost";
 import Post from "../model/Post";
 import findPostList from "../services/post/findPostList";
+import findPostById from "../services/post/findPostById";
 
-const AddNewBeat: RequestHandler = async (req, res, next) => {
+// @desc Get all beats
+// @route GET /beats
+// @access Public
+const getAllBeats: RequestHandler = async (req, res, next) => {
+  const perPage = 10;
+
+  let page = parseInt(req.query.page as string) || 1;
+  let search = "";
+
+  if (!req.query.search || req.query.search === "") {
+    //for skipping through large n_o of docs, avoid skip and implement based on the data you have e.g. date n cursor
+
+    const { total, posts: beats } = await findPostList(
+      page,
+      perPage,
+      search,
+      {}
+    );
+
+    // console.log(total);
+    // console.log(beats?.length);
+    return res.status(200).json({ perPage, total, posts: beats });
+  }
+
+  if (req.query.search) {
+    const search = req.query.search as string;
+    console.log(search);
+    if (search.split(" ").length === 1) {
+      const { total, posts: beats } = await findPostList(
+        page,
+        perPage,
+        search,
+        {
+          $text: { $search: search },
+        }
+      );
+      console.log(beats?.length);
+      typeof beats !== "undefined" && beats?.length > 0
+        ? res.status(200).json({ perPage, total, posts: beats })
+        : res.status(404).json({ message: "no data matches query" });
+    } else {
+      // const words = search.split(" ");
+      // let allwords = "";
+      // words.forEach((word) => (allwords = allwords + " " + word));
+      // // console.log(allwords);
+      // // console.log(`\"${search}\" ${allwords}`);
+      // // console.log(`${search} ${search.split(" ").join("")}`)
+      // // console.log(`\'${search}\' \'${allwords}\' `);
+      // console.log(`\'${search}\' \'${search.split(" ").join("")}\' `);
+      //double quotes for logical and single for or
+      const { total, posts: beats } = await findPostList(
+        page,
+        perPage,
+        search,
+        {
+          $text: {
+            $search: `\'${search}\' \'${search.split(" ").join("")}\' `,
+          }, //logical OR b2n phrases + OR b2n terms of the phrases
+        }
+      );
+      // console.log(beats?.length);
+      typeof beats !== "undefined" && beats?.length > 0
+        ? res.status(200).json({ perPage, total, posts: beats })
+        : res.status(404).json({ message: "no data matches query" });
+    }
+  }
+};
+
+// @desc Get a beat
+// @route GET /beats/id
+// @access Public
+const getBeat: RequestHandler = async (req, res, next) => {
+  const id = "111111";
+
+  const beat = await findPostById(id);
+};
+
+// @desc Add a beat
+// @route POST /beats
+// @access Private
+const addNewBeat: RequestHandler = async (req, res, next) => {
   const data = req.body;
   console.log(data);
   const userId = "64ca4f56f6fb8b30b6ffc9be";
@@ -87,50 +168,4 @@ const AddNewBeat: RequestHandler = async (req, res, next) => {
   }
 };
 
-const getAllBeats: RequestHandler = async (req, res, next) => {
-  const perPage = 10;
-
-  let page = parseInt(req.query.page as string) || 1;
-  let search = "";
-
-  if (!req.query.search) {
-    //for skipping through large n_o of docs, avoid skip and implement based on the data you have e.g. date n cursor
-    const beats = await findPostList(page, perPage, search, {});
-
-    console.log(beats?.length);
-    return res.status(200).json(beats);
-  }
-
-  if (req.query.search) {
-    const search = req.query.search as string;
-    console.log(search);
-    if (search.split(" ").length === 1) {
-      const beats = await findPostList(page, perPage, search, {
-        $text: { $search: search },
-      });
-      console.log(beats?.length);
-      typeof beats !== "undefined" && beats?.length > 0
-        ? res.status(200).json(beats)
-        : res.status(404).json({ message: "no data matches query" });
-    } else {
-      // const words = search.split(" ");
-      // let allwords = "";
-      // words.forEach((word) => (allwords = allwords + " " + word));
-      // // console.log(allwords);
-      // // console.log(`\"${search}\" ${allwords}`);
-      // // console.log(`${search} ${search.split(" ").join("")}`)
-      // // console.log(`\'${search}\' \'${allwords}\' `);
-      // console.log(`\'${search}\' \'${search.split(" ").join("")}\' `);
-      //double quotes for logical and single for or
-      const beats = await findPostList(page, perPage, search, {
-        $text: { $search: `\'${search}\' \'${search.split(" ").join("")}\' ` }, //logical OR b2n phrases + OR b2n terms of the phrases
-      });
-      console.log(beats?.length);
-      typeof beats !== "undefined" && beats?.length > 0
-        ? res.status(200).json(beats)
-        : res.status(404).json({ message: "no data matches query" });
-    }
-  }
-};
-
-export { AddNewBeat, getAllBeats };
+export { addNewBeat, getAllBeats, getBeat };

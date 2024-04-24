@@ -8,7 +8,7 @@ const postSchema = new Schema(
       ref: User,
       required: true,
     },
-    title: String,
+    title: { type: String, required: true },
 
     tags: [String],
     key: String,
@@ -21,5 +21,13 @@ const postSchema = new Schema(
 );
 
 postSchema.index({ title: "text", tags: "text" });
+
+postSchema.virtual("id").get(function () {
+  return this._id.toHexString();
+});
+
+postSchema.set("toJSON", {
+  virtuals: true,
+});
 
 export default mongoose.model("Post", postSchema);
