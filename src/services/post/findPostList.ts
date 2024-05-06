@@ -21,7 +21,7 @@ const findPostList = async (
       : {};
     const projection = search
       ? { title: 1, tags: 1, score: { $meta: "textScore" } }
-      : { title: 1, tags: 1 };
+      : {};
 
     const postsP = Post.find(filter, projection, options)
       .populate({
