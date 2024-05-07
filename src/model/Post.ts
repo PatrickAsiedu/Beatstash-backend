@@ -11,8 +11,9 @@ const postSchema = new Schema(
     title: { type: String, required: true },
 
     tags: [String],
+    genres: [String],
     key: String,
-    bpm: String,
+    bpm: Number,
     artwork: { type: String, required: true },
     mp3: { type: String, required: true },
     wav: String,

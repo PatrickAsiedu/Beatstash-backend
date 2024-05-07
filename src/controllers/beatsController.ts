@@ -22,10 +22,12 @@ const getAllBeats: RequestHandler = async (req, res, next) => {
   if (!req.query.search || req.query.search === "") {
     //for skipping through large n_o of docs, avoid skip and implement based on the data you have e.g. date n cursor
 
-    const acceptableParams: string[] = ["key", "bpm"];
+    const acceptableParams: string[] = ["key", "bpm", "genres"];
 
     // Filter req.query to include only acceptable parameters
-    const filteredQuery: { [key: string]: string } = Object.keys(req.query)
+    const filteredQueryParams: { [key: string]: string } = Object.keys(
+      req.query
+    )
       .filter((key) => acceptableParams.includes(key))
       .reduce((obj: { [key: string]: string }, key) => {
         if (req.query[key]) {
@@ -35,43 +37,70 @@ const getAllBeats: RequestHandler = async (req, res, next) => {
         return obj;
       }, {});
 
-    // Construct MongoDB query using the filtered query parameters
-    const query: { [key: string]: any }[] = [];
-    for (const key in filteredQuery) {
-      if (filteredQuery.hasOwnProperty(key)) {
-        let condition: { [key: string]: any } = {};
-        const value = filteredQuery[key];
+    // console.log(filteredQueryParams);
+    if (Object.keys(filteredQueryParams).length === 0) {
+      const { total, posts: beats } = await findPostList(
+        page,
+        limit,
+        search,
+        {}
+      );
 
-        // Determine the operator based on the type of field
-        if (key === "key") {
-          // For numeric fields, use $eq operator
-          condition[key] = { $eq: value };
-        } else if (key === "bpm") {
-          // For other fields, use $regex for case-insensitive partial match
-          condition[key] = { $eq: value };
+      // console.log(total);
+      // console.log(beats?.length);
+      total_pages = Math.ceil(total / limit);
+      page < total_pages && total % limit === 0
+        ? (perPage = 10)
+        : total_pages === page
+        ? (perPage = total % limit)
+        : (perPage = 10);
+      beats?.length > 0
+        ? res
+            .status(200)
+            .json({ page, perPage, total, total_pages, posts: beats })
+        : res.status(404).json({ message: "no data matches query" });
+    } else {
+      const query: { [key: string]: any }[] = [];
+      for (const key in filteredQueryParams) {
+        if (filteredQueryParams.hasOwnProperty(key)) {
+          let condition: { [key: string]: any } = {};
+          const value = filteredQueryParams[key];
+
+          if (key === "key") {
+            condition[key] = { $eq: value };
+          } else if (key === "bpm" && value.split(",").length === 2) {
+            const bpms = value.split(",").map((value) => parseInt(value));
+            console.log(bpms);
+
+            condition[key] = { $gte: bpms[0], $lte: bpms[1] };
+          } else if (key === "genres") {
+            const genres = value.split(",");
+            condition[key] = { $in: genres };
+          }
+
+          query.push(condition);
         }
-
-        query.push(condition);
       }
+      console.log(query);
+
+      const { total, posts: beats } = await findPostList(page, limit, search, {
+        $and: query,
+      });
+
+      // console.log(total);
+      // console.log(beats?.length);
+      total_pages = Math.ceil(total / limit);
+      page < total_pages && total % limit === 0
+        ? (perPage = 10)
+        : total_pages === page
+        ? (perPage = total % limit)
+        : (perPage = 10);
+      beats?.length > 0
+        ? res
+            .status(200)
+            .json({ page, perPage, total, total_pages, posts: beats })
+        : res.status(404).json({ message: "no data matches query" });
     }
-
-    const { total, posts: beats } = await findPostList(page, limit, search, {
-      $and: query,
-    });
-
-    // console.log(total);
-    // console.log(beats?.length);
-    total_pages = Math.ceil(total / limit);
-    page < total_pages && total % limit === 0
-      ? (perPage = 10)
-      : total_pages === page
-      ? (perPage = total % limit)
-      : (perPage = 0);
-    beats?.length > 0
-      ? res
-          .status(200)
-          .json({ page, perPage, total, total_pages, posts: beats })
-      : res.status(404).json({ message: "no data matches query" });
   }
 
   if (req.query.search) {

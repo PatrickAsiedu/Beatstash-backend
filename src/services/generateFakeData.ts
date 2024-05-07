@@ -132,18 +132,30 @@ const topTrapArtistsUSA = [
 ];
 
 const topKeysTrap = [
-  "C minor",
-  "D minor",
-  "E minor",
-  "F minor",
-  "G minor",
-  "A minor",
-  "C# minor",
-  "D# minor",
-  "F# minor",
-  "A# minor",
+  "cminor",
+  "dminor",
+  "eminor",
+  "fminor",
+  "gminor",
+  "aminor",
+  "c#minor",
+  "d#minor",
+  "f#minor",
+  "a#minor",
 ];
 
+const genres = [
+  "hippop",
+  "rnb",
+  "trap",
+  "drill",
+  "pop",
+  "country",
+  "latin",
+  "countrypop",
+  "gospel",
+  "afrobeat",
+];
 const topBPMsTrap = [130, 140, 150, 160, 170, 120, 110, 100, 180, 190];
 
 export const trapPosts: any = [];
@@ -168,6 +180,7 @@ trapRapSongTitles.forEach((title) => {
           " " +
           "type beat",
       ],
+      genres: [genres[i]],
       key: topKeysTrap[i],
       bpm: topBPMsTrap[i],
       artwork: "hhh",
@@ -240,7 +253,7 @@ trapRapSongTitles.forEach((title) => {
       wav: "hhhh",
     };
 
-    trapPosts.push(postexclusive);
+    trapPosts.push(postoriginal);
     i++;
   }
 
