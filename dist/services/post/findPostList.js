@@ -26,7 +26,7 @@ const findPostList = (page, perPage, search, filter) => __awaiter(void 0, void 0
             : {};
         const projection = search
             ? { title: 1, tags: 1, score: { $meta: "textScore" } }
-            : { title: 1, tags: 1 };
+            : {};
         const postsP = Post_1.default.find(filter, projection, options)
             .populate({
             path: "user",

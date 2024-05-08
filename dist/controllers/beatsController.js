@@ -21,26 +21,98 @@ const findPostById_1 = __importDefault(require("../services/post/findPostById"))
 // @route GET /beats
 // @access Public
 const getAllBeats = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const perPage = 10;
+    const limit = 10;
+    let perPage;
+    let total_pages;
     let page = parseInt(req.query.page) || 1;
     let search = "";
     if (!req.query.search || req.query.search === "") {
         //for skipping through large n_o of docs, avoid skip and implement based on the data you have e.g. date n cursor
-        const { total, posts: beats } = yield (0, findPostList_1.default)(page, perPage, search, {});
-        // console.log(total);
-        // console.log(beats?.length);
-        return res.status(200).json({ perPage, total, posts: beats });
+        const acceptableParams = ["key", "bpm", "genres"];
+        // Filter req.query to include only acceptable parameters
+        const filteredQueryParams = Object.keys(req.query)
+            .filter((key) => acceptableParams.includes(key))
+            .reduce((obj, key) => {
+            if (req.query[key]) {
+                obj[key] = req.query[key];
+            }
+            return obj;
+        }, {});
+        // console.log(filteredQueryParams);
+        if (Object.keys(filteredQueryParams).length === 0) {
+            const { total, posts: beats } = yield (0, findPostList_1.default)(page, limit, search, {});
+            // console.log(total);
+            // console.log(beats?.length);
+            total_pages = Math.ceil(total / limit);
+            page < total_pages && total % limit === 0
+                ? (perPage = 10)
+                : total_pages === page
+                    ? (perPage = total % limit)
+                    : (perPage = 10);
+            (beats === null || beats === void 0 ? void 0 : beats.length) > 0
+                ? res
+                    .status(200)
+                    .json({ page, perPage, total, total_pages, posts: beats })
+                : res.status(404).json({ message: "no data matches query" });
+        }
+        else {
+            const query = [];
+            for (const key in filteredQueryParams) {
+                if (filteredQueryParams.hasOwnProperty(key)) {
+                    let condition = {};
+                    const value = filteredQueryParams[key];
+                    if (key === "key") {
+                        condition[key] = { $eq: value };
+                    }
+                    else if (key === "bpm" && value.split(",").length === 2) {
+                        const bpms = value.split(",").map((value) => parseInt(value));
+                        console.log(bpms);
+                        condition[key] = { $gte: bpms[0], $lte: bpms[1] };
+                    }
+                    else if (key === "genres") {
+                        const genres = value.split(",");
+                        condition[key] = { $in: genres };
+                    }
+                    query.push(condition);
+                }
+            }
+            console.log(query);
+            const { total, posts: beats } = yield (0, findPostList_1.default)(page, limit, search, {
+                $and: query,
+            });
+            // console.log(total);
+            // console.log(beats?.length);
+            total_pages = Math.ceil(total / limit);
+            page < total_pages && total % limit === 0
+                ? (perPage = 10)
+                : total_pages === page
+                    ? (perPage = total % limit)
+                    : (perPage = 10);
+            (beats === null || beats === void 0 ? void 0 : beats.length) > 0
+                ? res
+                    .status(200)
+                    .json({ page, perPage, total, total_pages, posts: beats })
+                : res.status(404).json({ message: "no data matches query" });
+        }
     }
     if (req.query.search) {
         const search = req.query.search;
         console.log(search);
         if (search.split(" ").length === 1) {
-            const { total, posts: beats } = yield (0, findPostList_1.default)(page, perPage, search, {
+            const { total, posts: beats } = yield (0, findPostList_1.default)(page, limit, search, {
                 $text: { $search: search },
             });
             console.log(beats === null || beats === void 0 ? void 0 : beats.length);
+            total_pages = Math.ceil(total / limit);
+            page < total_pages && total % limit === 0
+                ? (perPage = 10)
+                : total_pages === page
+                    ? (perPage = total % limit)
+                    : (perPage = 10);
             typeof beats !== "undefined" && (beats === null || beats === void 0 ? void 0 : beats.length) > 0
-                ? res.status(200).json({ perPage, total, posts: beats })
+                ? res
+                    .status(200)
+                    .json({ page, perPage, total, total_pages, posts: beats })
                 : res.status(404).json({ message: "no data matches query" });
         }
         else {
@@ -53,14 +125,22 @@ const getAllBeats = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
             // // console.log(`\'${search}\' \'${allwords}\' `);
             // console.log(`\'${search}\' \'${search.split(" ").join("")}\' `);
             //double quotes for logical and single for or
-            const { total, posts: beats } = yield (0, findPostList_1.default)(page, perPage, search, {
+            const { total, posts: beats } = yield (0, findPostList_1.default)(page, limit, search, {
                 $text: {
                     $search: `\'${search}\' \'${search.split(" ").join("")}\' `,
                 }, //logical OR b2n phrases + OR b2n terms of the phrases
             });
             // console.log(beats?.length);
+            total_pages = Math.ceil(total / limit);
+            page < total_pages && total % limit === 0
+                ? (perPage = 10)
+                : total_pages === page
+                    ? (perPage = total % limit)
+                    : (perPage = 10);
             typeof beats !== "undefined" && (beats === null || beats === void 0 ? void 0 : beats.length) > 0
-                ? res.status(200).json({ perPage, total, posts: beats })
+                ? res
+                    .status(200)
+                    .json({ page, perPage, total, total_pages, posts: beats })
                 : res.status(404).json({ message: "no data matches query" });
         }
     }
