@@ -8,8 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUser = exports.getAllUsers = void 0;
+const findUser_1 = __importDefault(require("../services/user/findUser"));
 // @desc Get all users
 // @route GET /users
 // @access Public
@@ -18,7 +22,14 @@ exports.getAllUsers = getAllUsers;
 // @desc Get a users
 // @route GET /users/id
 // @access Public
-const getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () { });
+const getUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id: userName } = req.params;
+    const user = yield (0, findUser_1.default)(userName);
+    // console.log(user);
+    user
+        ? res.status(200).json(user)
+        : res.status(404).json({ message: "user not found" });
+});
 exports.getUser = getUser;
 // @desc Get all users
 // @route GET /users

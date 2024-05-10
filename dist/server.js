@@ -75,7 +75,7 @@ app.use("/login", Login.router);
 app.use("/logout", Logout.router);
 app.use("/auth", useGoogle.router);
 app.use("/beats", Beats.router);
-app.use("/members", Users.router);
+app.use("/users", Users.router);
 // app.use(isAuthenticated)
 app.get("/getdata", auth_1.default, (req, res) => {
     console.log(req.isAuthenticated());

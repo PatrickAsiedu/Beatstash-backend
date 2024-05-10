@@ -70,7 +70,6 @@ const getAllBeats: RequestHandler = async (req, res, next) => {
             condition[key] = { $eq: value };
           } else if (key === "bpm" && value.split(",").length === 2) {
             const bpms = value.split(",").map((value) => parseInt(value));
-            console.log(bpms);
 
             condition[key] = { $gte: bpms[0], $lte: bpms[1] };
           } else if (key === "genres") {
@@ -81,7 +80,7 @@ const getAllBeats: RequestHandler = async (req, res, next) => {
           query.push(condition);
         }
       }
-      console.log(query);
+      // console.log(query);
 
       const { total, posts: beats } = await findPostList(page, limit, search, {
         $and: query,
@@ -157,9 +156,12 @@ const getAllBeats: RequestHandler = async (req, res, next) => {
 // @route GET /beats/id
 // @access Public
 const getBeat: RequestHandler = async (req, res, next) => {
-  const id = "111111";
+  const { id } = req.params;
 
   const beat = await findPostById(id);
+  beat
+    ? res.status(200).json(beat)
+    : res.status(404).json({ message: "beat not found" });
 };
 
 // @desc Add a beat

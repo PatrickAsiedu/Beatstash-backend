@@ -53,3 +53,4 @@ router
     { name: "mp3", maxCount: 1 },
     { name: "wav", maxCount: 1 },
 ]), filesExists_1.default, artworkValidator_1.default, mp3fileValidator_1.default, wavfileValidator_1.default, BeatsController.addNewBeat);
+router.route("/:id").get(BeatsController.getBeat);

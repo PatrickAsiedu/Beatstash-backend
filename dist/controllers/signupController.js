@@ -17,7 +17,7 @@ const User_1 = __importDefault(require("../model/User"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const handleSIgnUp = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(req.body);
-    const { email, password } = req.body;
+    const { email, password, username } = req.body;
     // validate fields
     //check if required fields exist
     if (!email || !password) {
@@ -35,6 +35,7 @@ const handleSIgnUp = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const newUser = yield User_1.default.create({
             email: email,
             password: hashedPassword,
+            username: username,
         });
         console.log(newUser);
         res.status(201).json({ success: `New user ${email} created` });

@@ -21,7 +21,7 @@ const userSchema = new Schema(
     lastname: {
       type: String,
     },
-    username: String,
+    username: { type: String },
     password: {
       type: String,
       // required: true
@@ -36,7 +36,13 @@ const userSchema = new Schema(
     },
     avatar: String,
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true } }
 );
+
+userSchema.virtual("posts", {
+  ref: "Post",
+  localField: "_id",
+  foreignField: "user",
+});
 
 export default mongoose.model("User", userSchema);

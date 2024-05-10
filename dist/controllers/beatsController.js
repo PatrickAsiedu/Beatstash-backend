@@ -66,7 +66,6 @@ const getAllBeats = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
                     }
                     else if (key === "bpm" && value.split(",").length === 2) {
                         const bpms = value.split(",").map((value) => parseInt(value));
-                        console.log(bpms);
                         condition[key] = { $gte: bpms[0], $lte: bpms[1] };
                     }
                     else if (key === "genres") {
@@ -76,7 +75,7 @@ const getAllBeats = (req, res, next) => __awaiter(void 0, void 0, void 0, functi
                     query.push(condition);
                 }
             }
-            console.log(query);
+            // console.log(query);
             const { total, posts: beats } = yield (0, findPostList_1.default)(page, limit, search, {
                 $and: query,
             });
@@ -150,8 +149,11 @@ exports.getAllBeats = getAllBeats;
 // @route GET /beats/id
 // @access Public
 const getBeat = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = "111111";
+    const { id } = req.params;
     const beat = yield (0, findPostById_1.default)(id);
+    beat
+        ? res.status(200).json(beat)
+        : res.status(404).json({ message: "beat not found" });
 });
 exports.getBeat = getBeat;
 // @desc Add a beat

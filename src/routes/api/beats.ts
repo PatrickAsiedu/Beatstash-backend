@@ -35,4 +35,6 @@ router
     BeatsController.addNewBeat
   );
 
+router.route("/:id").get(BeatsController.getBeat);
+
 export { router };
