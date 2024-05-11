@@ -157,13 +157,14 @@ const genres = [
     "afrobeat",
 ];
 const topBPMsTrap = [130, 140, 150, 160, 170, 120, 110, 100, 180, 190];
+const userid = "663e0d549a0682e72ba2d8a0";
 exports.trapPosts = [];
 let i = 0;
 trapRapSongTitles.forEach((title) => {
     if (i === 10) {
         i = 0;
         const postoriginal = {
-            user: "64ca4f56f6fb8b30b6ffc9be",
+            user: userid,
             title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
             tags: [
                 topTrapArtistsUSA[i],
@@ -185,7 +186,7 @@ trapRapSongTitles.forEach((title) => {
             wav: "hhhh",
         };
         const postnoartintitle = {
-            user: "64ca4f56f6fb8b30b6ffc9be",
+            user: userid,
             title: title,
             tags: [
                 topTrapArtistsUSA[i],
@@ -199,6 +200,7 @@ trapRapSongTitles.forEach((title) => {
                     " " +
                     "type beat",
             ],
+            genres: [genres[i]],
             key: topKeysTrap[i],
             bpm: topBPMsTrap[i],
             artwork: "hhh",
@@ -206,17 +208,18 @@ trapRapSongTitles.forEach((title) => {
             wav: "hhhh",
         };
         const postnotags = {
-            user: "64ca4f56f6fb8b30b6ffc9be",
+            user: userid,
             title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
             tags: [""],
             key: topKeysTrap[i],
+            genres: [genres[i]],
             bpm: topBPMsTrap[i],
             artwork: "hhh",
             mp3: "hhhh",
             wav: "hhhh",
         };
         const posttagsnotrim = {
-            user: "64ca4f56f6fb8b30b6ffc9be",
+            user: userid,
             title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
             tags: [
                 topTrapArtistsUSA[i],
@@ -229,6 +232,7 @@ trapRapSongTitles.forEach((title) => {
                     " " +
                     "type beat",
             ],
+            genres: [genres[i]],
             key: topKeysTrap[i],
             bpm: topBPMsTrap[i],
             artwork: "hhh",
@@ -236,13 +240,14 @@ trapRapSongTitles.forEach((title) => {
             wav: "hhhh",
         };
         const postexclusive = {
-            user: "64ca4f56f6fb8b30b6ffc9be",
+            user: userid,
             title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
             tags: [
                 topTrapArtistsUSA[i],
                 topTrapArtistsUSA[i] + " " + "type beat",
                 topTrapArtistsUSA[i].split(" ").join(""),
             ],
+            genres: [genres[i]],
             key: topKeysTrap[i],
             bpm: topBPMsTrap[i],
             artwork: "hhh",
@@ -253,7 +258,7 @@ trapRapSongTitles.forEach((title) => {
         i++;
     }
     const postoriginal = {
-        user: "64ca4f56f6fb8b30b6ffc9be",
+        user: userid,
         title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
         tags: [
             topTrapArtistsUSA[i],
@@ -267,6 +272,7 @@ trapRapSongTitles.forEach((title) => {
                 " " +
                 "type beat",
         ],
+        genres: [genres[i]],
         key: topKeysTrap[i],
         bpm: topBPMsTrap[i],
         artwork: "hhh",
@@ -274,7 +280,7 @@ trapRapSongTitles.forEach((title) => {
         wav: "hhhh",
     };
     const postnoartintitle = {
-        user: "64ca4f56f6fb8b30b6ffc9be",
+        user: userid,
         title: title,
         tags: [
             topTrapArtistsUSA[i],
@@ -288,6 +294,7 @@ trapRapSongTitles.forEach((title) => {
                 " " +
                 "type beat",
         ],
+        genres: [genres[i]],
         key: topKeysTrap[i],
         bpm: topBPMsTrap[i],
         artwork: "hhh",
@@ -295,9 +302,10 @@ trapRapSongTitles.forEach((title) => {
         wav: "hhhh",
     };
     const postnotags = {
-        user: "64ca4f56f6fb8b30b6ffc9be",
+        user: userid,
         title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
         tags: [""],
+        genres: [genres[i]],
         key: topKeysTrap[i],
         bpm: topBPMsTrap[i],
         artwork: "hhh",
@@ -305,7 +313,7 @@ trapRapSongTitles.forEach((title) => {
         wav: "hhhh",
     };
     const posttagsnotrim = {
-        user: "64ca4f56f6fb8b30b6ffc9be",
+        user: userid,
         title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
         tags: [
             topTrapArtistsUSA[i],
@@ -318,6 +326,7 @@ trapRapSongTitles.forEach((title) => {
                 " " +
                 "type beat",
         ],
+        genres: [genres[i]],
         key: topKeysTrap[i],
         bpm: topBPMsTrap[i],
         artwork: "hhh",
@@ -325,13 +334,14 @@ trapRapSongTitles.forEach((title) => {
         wav: "hhhh",
     };
     const postexclusive = {
-        user: "64ca4f56f6fb8b30b6ffc9be",
+        user: userid,
         title: topTrapArtistsUSA[i] + " " + "type beat" + " " + "-" + " " + title,
         tags: [
             topTrapArtistsUSA[i],
             topTrapArtistsUSA[i] + " " + "type beat",
             topTrapArtistsUSA[i].split(" ").join(""),
         ],
+        genres: [genres[i]],
         key: topKeysTrap[i],
         bpm: topBPMsTrap[i],
         artwork: "hhh",

@@ -4,12 +4,13 @@ import { Response, Request } from "express";
 
 type Userdata = {
   email: string;
+  username: string;
   password: string;
 };
 
 const handleSIgnUp = async (req: Request, res: Response) => {
   console.log(req.body);
-  const { email, password }: Userdata = req.body;
+  const { email, password, username }: Userdata = req.body;
   // validate fields
   //check if required fields exist
   if (!email || !password) {
@@ -28,6 +29,7 @@ const handleSIgnUp = async (req: Request, res: Response) => {
     const newUser = await User.create({
       email: email,
       password: hashedPassword,
+      username: username,
     });
     console.log(newUser);
     res.status(201).json({ success: `New user ${email} created` });

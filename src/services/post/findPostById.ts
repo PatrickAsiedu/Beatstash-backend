@@ -2,7 +2,10 @@ import Post from "../../model/Post";
 
 const findPostById = async (_id: string) => {
   try {
-    const post = await Post.findById(_id);
+    const post = await Post.findById(_id).populate({
+      path: "user",
+      select: { _id: 0, username: 1 },
+    });
 
     return post;
   } catch (error) {

@@ -26,7 +26,7 @@ const findPostList = async (
     const postsP = Post.find(filter, projection, options)
       .populate({
         path: "user",
-        select: { _id: 0, email: 1 },
+        select: { _id: 0, username: 1 },
       })
       .limit(perPage)
       .skip((page - 1) * perPage)

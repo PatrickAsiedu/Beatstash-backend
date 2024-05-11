@@ -15,7 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Post_1 = __importDefault(require("../../model/Post"));
 const findPostById = (_id) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const post = yield Post_1.default.findById(_id);
+        const post = yield Post_1.default.findById(_id).populate({
+            path: "user",
+            select: { _id: 0, username: 1 },
+        });
         return post;
     }
     catch (error) {

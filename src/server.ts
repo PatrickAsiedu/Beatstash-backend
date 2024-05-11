@@ -68,7 +68,7 @@ app.use("/auth", useGoogle.router);
 
 app.use("/beats", Beats.router);
 
-app.use("/members", Users.router);
+app.use("/users", Users.router);
 
 // app.use(isAuthenticated)
 app.get("/getdata", isAuthenticated, (req, res) => {
